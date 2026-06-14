@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VELVET SOUND — Where Music Meets Luxury</title>
+  <meta name="description" content="A luxury personal music vault. Curated sounds for the distinguished ear." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Outfit:wght@200;300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-outer" id="cursorOuter"></div>
+  <div class="cursor-inner" id="cursorInner"></div>
+
+  <!-- LOADING SCREEN -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-content">
+      <div class="loading-logo">
+        <span class="loading-v">V</span>
+        <div class="loading-bar"></div>
+      </div>
+      <p class="loading-name">VELVET SOUND</p>
+      <p class="loading-tagline">Initializing your vault...</p>
+      <div class="loading-progress">
+        <div class="loading-fill" id="loadingFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTICLE CANVAS -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-logo">
+      <span class="logo-mark">V</span>
+      <span class="logo-text">VELVET SOUND</span>
+    </div>
+    <div class="nav-links">
+      <a href="#playlists" class="nav-link">Collection</a>
+      <a href="#stats" class="nav-link">Stats</a>
+      <a href="#about" class="nav-link">About</a>
+      <button class="nav-ambient" id="ambientToggle" title="Toggle Ambient Mode">
+        <span class="ambient-icon">◈</span>
+        <span>Ambient</span>
+      </button>
+    </div>
+    <div class="nav-mobile-toggle" id="mobileMenuToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#playlists" class="mobile-link">Collection</a>
+    <a href="#stats" class="mobile-link">Stats</a>
+    <a href="#about" class="mobile-link">About</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-glow"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow reveal-text">Personal Music Vault</p>
+      <h1 class="hero-title reveal-text">
+        <span>VELVET</span>
+        <em>SOUND</em>
+      </h1>
+      <p class="hero-tagline reveal-text">Where Music Meets Luxury</p>
+      <p class="hero-desc reveal-text">A private sanctuary of sound. Curated with precision for the distinguished ear. No algorithms. No distractions. Only music that matters.</p>
+      <div class="hero-actions reveal-text">
+        <button class="btn-primary" id="exploreBtn">
+          <span>Explore Collection</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="btn-ghost" id="playFeaturedBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <span>Play Now</span>
+        </button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="vinyl-container">
+        <div class="vinyl" id="heroVinyl">
+          <div class="vinyl-label">
+            <span>VS</span>
+          </div>
+          <div class="vinyl-ring r1"></div>
+          <div class="vinyl-ring r2"></div>
+          <div class="vinyl-ring r3"></div>
+        </div>
+        <div class="vinyl-glow"></div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- NOW PLAYING BAR (sticky bottom) -->
+  <div class="now-playing-bar" id="nowPlayingBar">
+    <div class="npb-track">
+      <div class="npb-cover" id="npbCover">
+        <div class="npb-cover-inner"></div>
+      </div>
+      <div class="npb-info">
+        <p class="npb-title" id="npbTitle">Select a track</p>
+        <p class="npb-artist" id="npbArtist">VELVET SOUND</p>
+      </div>
+      <button class="npb-fav" id="npbFav" title="Add to Favorites">♡</button>
+    </div>
+    <div class="npb-controls">
+      <button class="ctrl-btn" id="shuffleBtn" title="Shuffle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 3h5v5M4 20l16-16M16 20h5v-5M4 4l7 7"/></svg>
+      </button>
+      <button class="ctrl-btn" id="prevBtn" title="Previous">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="ctrl-btn ctrl-play" id="playPauseBtn" title="Play/Pause">
+        <svg class="icon-play" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg class="icon-pause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="ctrl-btn" id="nextBtn" title="Next">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-6 5.5 3.5L8 9v6zm8-7h2v14h-2z"/></svg>
+      </button>
+      <button class="ctrl-btn" id="repeatBtn" title="Repeat">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/></svg>
+      </button>
+    </div>
+    <div class="npb-progress-wrap">
+      <span class="npb-time" id="npbCurrentTime">0:00</span>
+      <div class="npb-progress" id="npbProgress">
+        <div class="npb-fill" id="npbFill"></div>
+        <div class="npb-thumb" id="npbThumb"></div>
+      </div>
+      <span class="npb-time" id="npbDuration">0:00</span>
+    </div>
+    <div class="npb-right">
+      <button class="ctrl-btn" id="lyricsToggleBtn" title="Lyrics">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </button>
+      <button class="ctrl-btn" id="fullscreenBtn" title="Now Playing">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+      </button>
+      <div class="npb-vol">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        <input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="80" />
+      </div>
+    </div>
+    <!-- Audio Visualizer Canvas in bar -->
+    <canvas class="npb-visualizer" id="npbVisualizer"></canvas>
+  </div>
+
+  <!-- FULLSCREEN NOW PLAYING -->
+  <div class="fullscreen-player" id="fullscreenPlayer">
+    <div class="fsp-bg" id="fspBg"></div>
+    <div class="fsp-overlay"></div>
+    <button class="fsp-close" id="fspClose">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="fsp-content">
+      <div class="fsp-left">
+        <div class="fsp-cover-wrap">
+          <div class="fsp-cover" id="fspCover">
+            <div class="fsp-cover-glow"></div>
+          </div>
+          <canvas class="fsp-visualizer" id="fspVisualizer"></canvas>
+        </div>
+        <div class="fsp-track-info">
+          <h2 class="fsp-title" id="fspTitle">—</h2>
+          <p class="fsp-artist" id="fspArtist">VELVET SOUND</p>
+          <p class="fsp-playlist" id="fspPlaylist"></p>
+        </div>
+        <div class="fsp-controls">
+          <button class="ctrl-btn fsp-ctrl" id="fspShuffle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 3h5v5M4 20l16-16M16 20h5v-5M4 4l7 7"/></svg>
+          </button>
+          <button class="ctrl-btn fsp-ctrl" id="fspPrev">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+          </button>
+          <button class="ctrl-btn ctrl-play fsp-play" id="fspPlayPause">
+            <svg class="icon-play" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+          <button class="ctrl-btn fsp-ctrl" id="fspNext">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-6 5.5 3.5L8 9v6zm8-7h2v14h-2z"/></svg>
+          </button>
+          <button class="ctrl-btn fsp-ctrl" id="fspRepeat">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/></svg>
+          </button>
+        </div>
+        <div class="fsp-progress-wrap">
+          <span class="fsp-time" id="fspCurrentTime">0:00</span>
+          <div class="fsp-progress" id="fspProgress">
+            <div class="fsp-fill" id="fspFill"></div>
+            <div class="fsp-thumb" id="fspThumb"></div>
+          </div>
+          <span class="fsp-time" id="fspDuration">0:00</span>
+        </div>
+      </div>
+      <div class="fsp-right">
+        <div class="fsp-lyrics-panel" id="fspLyrics">
+          <h3 class="fsp-lyrics-title">Lyrics</h3>
+          <div class="fsp-lyrics-content" id="fspLyricsContent"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- SEARCH -->
+    <section class="search-section">
+      <div class="container">
+        <div class="search-wrap">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" class="search-input" id="searchInput" placeholder="Search tracks, artists, moods..." />
+          <button class="search-clear" id="searchClear">×</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </section>
+
+    <!-- PLAYLISTS SECTION -->
+    <section class="playlists-section" id="playlists">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow">The Collection</p>
+          <h2 class="section-title">Personal Playlists</h2>
+          <p class="section-desc">Eight curated vaults of sound, each crafted for a distinct state of mind.</p>
+        </div>
+        <div class="playlists-grid" id="playlistsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ACTIVE PLAYLIST / TRACK LIST -->
+    <section class="tracklist-section" id="tracklistSection" style="display:none">
+      <div class="container">
+        <div class="tracklist-header">
+          <button class="back-btn" id="backBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+          </button>
+          <div class="tracklist-meta" id="tracklistMeta"></div>
+          <button class="play-all-btn" id="playAllBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Play All
+          </button>
+        </div>
+        <div class="tracklist" id="tracklist"></div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-section" id="stats">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow">The Numbers</p>
+          <h2 class="section-title">Vault Stats</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">♪</div>
+            <div class="stat-value" id="statTracks">0</div>
+            <div class="stat-label">Total Tracks</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">▤</div>
+            <div class="stat-value" id="statPlaylists">0</div>
+            <div class="stat-label">Playlists</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">◷</div>
+            <div class="stat-value" id="statDuration">0h</div>
+            <div class="stat-label">Total Duration</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">♥</div>
+            <div class="stat-value" id="statFavs">0</div>
+            <div class="stat-label">Favorites</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAVORITES -->
+    <section class="favorites-section" id="favoritesSection">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow">Your Picks</p>
+          <h2 class="section-title">Favorites</h2>
+        </div>
+        <div class="favorites-list" id="favoritesList">
+          <p class="empty-state">Your favorites will appear here. Press ♡ on any track.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECENTLY PLAYED -->
+    <section class="recent-section">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-eyebrow">History</p>
+          <h2 class="section-title">Recently Played</h2>
+        </div>
+        <div class="recent-list" id="recentList">
+          <p class="empty-state">Your listening history will appear here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about-section" id="about">
+      <div class="container">
+        <div class="about-inner">
+          <div class="about-text">
+            <p class="section-eyebrow">The Vault</p>
+            <h2 class="about-title">A Private<br /><em>Collection</em></h2>
+            <p class="about-body">VELVET SOUND is not a streaming platform. It is a personal archive — a carefully assembled vault of tracks that define moods, moments, and mindsets. Every playlist here has been curated with intention, not algorithm.</p>
+            <p class="about-body">This is music as a lifestyle artifact. Chosen like a fine timepiece. Arranged like a premium library. Experienced like an exclusive private event.</p>
+            <div class="about-divider"></div>
+            <p class="about-signature">Built for those who hear the difference.</p>
+          </div>
+          <div class="about-visual">
+            <div class="about-orb"></div>
+            <div class="about-lines">
+              <div class="about-line"></div>
+              <div class="about-line"></div>
+              <div class="about-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="footer-logo-mark">V</span>
+          <div>
+            <p class="footer-logo-text">VELVET SOUND</p>
+            <p class="footer-tagline">Where Music Meets Luxury</p>
+          </div>
+        </div>
+        <div class="footer-quote">
+          <p>"Music is the shorthand of emotion."</p>
+          <span>— Leo Tolstoy</span>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 VELVET SOUND. Personal Music Vault. All rights reserved.</p>
+        <p class="footer-note">Crafted with precision. Curated with soul.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LYRICS OVERLAY -->
+  <div class="lyrics-overlay" id="lyricsOverlay">
+    <div class="lyrics-inner">
+      <div class="lyrics-header">
+        <p class="lyrics-track-name" id="lyricsTrackName">—</p>
+        <button class="lyrics-close" id="lyricsClose">×</button>
+      </div>
+      <div class="lyrics-body" id="lyricsBody"></div>
+    </div>
+  </div>
+
+  <audio id="audioEl"></audio>
+  <script src="js/app.js"></script>
+</body>
+</html>
